@@ -1,9 +1,17 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import { LockClosedIcon } from '@heroicons/react/solid';
+import { useAuth } from '@hooks/useAuth';
+import LoginError from "@components/LoginError"
 
 export default function LoginPage() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const auth = useAuth()
+  const router = useRouter()
+
+  const [open, setOpen] = useState(false)
+  const cancelButtonRef = useRef(null)
 
   const submitHandler = event => {
     event.preventDefault();
@@ -11,11 +19,17 @@ export default function LoginPage() {
     const password = passwordRef.current.value;
 
     // validar datos _--
-    console.log(email, password)
-
+    // console.log(email, password)
+    auth.signIn(email, password).then(() => {
+      router.push("/dashboard")
+    }).catch((err)=>{
+      setOpen(true)
+    })
+    
   }
   return (
     <>
+      <LoginError open={open} setOpen={setOpen} cancelButtonRef={cancelButtonRef} />
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
