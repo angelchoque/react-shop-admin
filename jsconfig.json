@@ -5,9 +5,6 @@
       "@styles/*": [
         "styles/*"
       ],
-      "@pages/*": [
-        "./*"
-      ],
       "@common/*": [
         "common/*"
       ],
